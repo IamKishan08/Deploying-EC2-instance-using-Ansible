@@ -1,0 +1,52 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  vars:
+    region: us-east-1            # Your AWS region
+    instance_id: "i-086490a897f627505"  # Your existing EC2 instance ID
+    volume_size: 16              # New volume size in GB
+
+  tasks:
+    - name: Get instance details
+      amazon.aws.ec2_instance_info:
+        aws_access_key: "{{ ec2_access_key }}"
+        aws_secret_key: "{{ ec2_secret_key }}"
+        region: "{{ region }}"
+        instance_ids:
+          - "{{ instance_id }}"
+      register: instance_info
+
+    - name: Find the root EBS volume ID and availability zone
+      set_fact:
+        root_volume_id: "{{ item.ebs.volume_id }}"
+        availability_zone: "{{ instance_info.instances[0].placement.availability_zone }}"
+      loop: "{{ instance_info.instances[0].block_device_mappings }}"
+      when: item.device_name == '/dev/xvda'
+
+    - name: Modify the EBS volume size
+      amazon.aws.ec2_vol:
+        aws_access_key: "{{ ec2_access_key }}"
+        aws_secret_key: "{{ ec2_secret_key }}"
+        region: "{{ region }}"
+        volume_size: "{{ volume_size }}"
+        modify_volume: true
+        id: "{{ root_volume_id }}"
+        zone: "{{ availability_zone }}"
+
+    - name: Wait for the volume modification to complete
+      amazon.aws.ec2_vol_info:
+        aws_access_key: "{{ ec2_access_key }}"
+        aws_secret_key: "{{ ec2_secret_key }}"
+        region: "{{ region }}"
+        filters:
+          volume-id: "{{ root_volume_id }}"
+      register: volume_info
+      until: volume_info.volumes[0].size == volume_size
+      retries: 12
+      delay: 10
+
+    - name: Notify to manually extend the filesystem on the instance
+      debug:
+        msg: "Run 'growpart' and 'resize2fs' or 'xfs_growfs' on the instance to extend the filesystem."
+
