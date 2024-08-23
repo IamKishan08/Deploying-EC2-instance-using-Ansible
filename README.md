@@ -2,6 +2,9 @@
 
 This repository contains Ansible playbooks for managing AWS EC2 instances, including provisioning a new EC2 instance and resizing the EBS volume.
 
+
+Refer this article : https://medium.com/@a_tsai5/creating-an-ec2-instance-using-ansible-764cf70015f6
+
 ## Prerequisites
 
 - Ansible installed on your local machine.
