@@ -29,7 +29,10 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, world! 
       - name: Run a one-line script
-        run: ls -ltr / > /tmp/files.txt
+        run: | 
+          ls -ltr / > /tmp/files.txt
+          uname -r > /tmp/kernel.txt
+          cat /etc/os-release > /tmp/osrelease.txt
         
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
