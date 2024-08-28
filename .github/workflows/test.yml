@@ -1,0 +1,8 @@
+hosts: self-hosted
+tasks:
+  - name: create a file in /tmp
+    lineinfile:
+       path: "/tmp/testing.txt"
+       line: "This is testing file from our end"
+       create: yes
+       
