@@ -60,18 +60,18 @@
       # Always require the 'create_ec2' tag to provision EC2 instance
       tags: ['never', 'create_ec2'] 
 
-    - name: Facts
-      block: # this block prints out instance data
+    # - name: Facts
+    #   block: # this block prints out instance data
 
-      - name: Get instances facts
-        ec2_instance_info:
-          aws_access_key: "{{ ec2_access_key }}"
-          aws_secret_key: "{{ ec2_secret_key }}"
-          region: "{{ region }}"
-        register: result
+    #   - name: Get instances facts
+    #     ec2_instance_info:
+    #       aws_access_key: "{{ ec2_access_key }}"
+    #       aws_secret_key: "{{ ec2_secret_key }}"
+    #       region: "{{ region }}"
+    #     register: result
 
-      - name: Instances ID
-        debug:
-          msg: "ID: {{ item.instance_id }} - State: {{ item.state.name }} - Public DNS: {{ item.public_dns_name }}"
-        loop: "{{ result.instances }}"
-      tags: always     
+    #   - name: Instances ID
+    #     debug:
+    #       msg: "ID: {{ item.instance_id }} - State: {{ item.state.name }} - Public DNS: {{ item.public_dns_name }}"
+    #     loop: "{{ result.instances }}"
+    #   tags: always     
