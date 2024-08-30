@@ -7,7 +7,7 @@
   vars:
     key_name: my_aws             # Key used for SSH
     region: us-east-1            # Region may affect response and pricing
-    image: ami-066784287e358dad1  # Amazon or AMI of manually launched instances
+    image: ami-0583d8c7a9c35822c  # Amazon or AMI of manually launched instances
     instance_type: t2.nano       # Choose instance type, check AWS for pricing
     sec_group: "test-security-group"
 
