@@ -1,0 +1,23 @@
+---
+- name: Gather OS and System Information
+  hosts: all
+  become: yes
+  tasks:
+    - name: Gather system facts
+      setup:
+    
+    - name: Display OS Information
+      debug:
+        msg: |
+          OS Family: {{ ansible_facts['os_family'] }}
+          Distribution: {{ ansible_facts['distribution'] }}
+          Distribution Version: {{ ansible_facts['distribution_version'] }}
+          Kernel Version: {{ ansible_facts['kernel'] }}
+
+    - name: Display System Information
+      debug:
+        msg: |
+          Hostname: {{ ansible_facts['hostname'] }}
+          Architecture: {{ ansible_facts['processor_cores'] }} cores, {{ ansible_facts['processor'] }}
+          Memory: {{ ansible_facts['memtotal_mb'] }} MB
+          Uptime: {{ ansible_facts['uptime_seconds'] | int / 3600 }} hours
