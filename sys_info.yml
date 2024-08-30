@@ -1,11 +1,10 @@
 ---
 - name: Gather OS and System Information
   hosts: all
-  become: yes
   tasks:
     - name: Gather system facts
       setup:
-    
+
     - name: Display OS Information
       debug:
         msg: |
